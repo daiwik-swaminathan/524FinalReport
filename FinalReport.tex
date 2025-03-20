@@ -64,10 +64,26 @@ Throughout this project, we encountered several challenges and key takeaways:
     \item Future work could include QR code-based Wi-Fi onboarding (which affects iPhones), more advanced traffic profiling, and further exploration of phishing techniques using collected browsing data.
 \end{itemize}
 
-\section{Conclusion and Future Work}
-Our study demonstrates how an attacker can exploit NFC-based Wi-Fi onboarding to gain access to a victim’s network traffic without their explicit awareness. The effectiveness of this attack highlights the need for increased security measures and user education. In future work, we plan to explore additional social engineering techniques, automated traffic profiling, and countermeasures against rogue access points.
+\section{Future Work}
+\textbf{Other Connection Methods}
 
-We also propose testing additional NFC payloads and different router configurations to determine the extent of possible exploitation. Finally, studying how Apple’s iOS handles NFC onboarding could provide insights into the differences in security across platforms.
+Apple does not allow its users to connect to WiFi networks through NFC tags. Therefore, we were interested in other ways we could connect individuals to a hidden nefarious network. One possibility was QR codes. Brandon (on Android) was able to scan the NFC tag, connect to it, and then generate a QR code. When Wyatt scanned the QR code the iPhone was prompted to connect to a hidden network. Both Apple and Android OS only show the SSID (which can be named identical to a real network, such as eduroam).
+
+Setting up a QR code in a coffee shop would be an easy way to piggyback on the existing network (safe) and social engineer people into logging your identical named nefarious network. 
+
+\textbf{Profiling}
+
+Another attack vector was when, with the ability to see the traffic of an individual device, we can create profiles of users. Creating a script that captures the time spent on a website, the types of websites, or even the security risks of that website would be helpful to an attacker. If someone frequently visits a site with a known vulnerability, that could perhaps be used to attack them. Alternatively, if you were to log an entire company's router traffic, you could make note of any user that visits compromised websites and give them an integrity value. Then attacks those users with lowest scores; this would be another way to profile a possible victim. 
+
+\textbf{Spoofing}
+
+With the ability to create hidden networks that have the same name as real networks, we have the opportunity to create spoof attacks. Often, logging into a network will ask users for information. For instance, when logging into eduroam you asked for your Cal Poly Login. Since we can redirect traffic, we could create specific pop-ups depending on what network we are impersonating and steal vital information.
+
+\textbf{SpearFishing} 
+
+Similarly to profiling, with the ability to log user web traffic, we can phish target avenues. For instance, if a target is often on job-listing sites such as Indeed or Linkedin, a spear fished attack with an email of a job listing would surely be effective. 
+
+
 
 \section{Recommendations}
 To protect against such attacks, users should:
@@ -80,6 +96,24 @@ To protect against such attacks, users should:
 
 Additionally, developers and manufacturers should implement security measures such as requiring explicit user confirmation before connecting to NFC-based networks and enforcing stricter authentication for onboarding mechanisms.
 
+\section{Pivot Stage}
+
+The initially intent was to create a secure WiFi network which used near field communication (NFC) tags to authenticate devices onto a network. Imagine a WiFi network at home has a super complicated (therefore secure) password. Rather than having to say the password to a guest, they would scan a NFC tag. In addition, the goal was to develop a raspberry pi to act as a central controller, facilitating interaction between the NFC tags and router. In case the password was compromised, the central controller would change the password and reprogram the NFC, thus reducing the pain of changing the passwords on all your devices. The central controller is also responsible for validating that the NFC tags are on the approved tag list to avoid NFC cloning. \newline
+
+There were three main security benefits to this system. 
+
+\begin{itemize}
+    \item 1) Enhanced access control by incorporating a physical element of a NFC tag. 
+    \item 2) By authorizing through a NFC tag, the password to the network can be much more advanced which would be more resilient to brute force attacks. 
+    \item 3) Centralized management: the raspberry pi would monitor the NFC tags, suspend access if the user went to a compromised website, and update the password if necessary. 
+\end{itemize}
+
+However, iPhones do not support using NFC to connect to WiFi network, which serverly limited the accessibility of our system. In addition, our router already had an OS called MikroTik which allowed us to provide control over our network. Therefore, we pivoted to
+
+
+
+
+\section{Conclusion}
 \bibliographystyle{ACM-Reference-Format}
 \bibliography{references}
 
