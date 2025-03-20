@@ -2,35 +2,83 @@
 
 \title{Network Traffic Monitoring via Rogue Access Points}
 
-\author{Group Member 1, Group Member 2, Group Member 3}
+\author{Daiwik Swaminathan, Brandon, Wyatt}
 \affiliation{\institution{California Polytechnic State University, San Luis Obispo}}
-\email{{member1, member2, member3}@calpoly.edu}
+\email{{daiwik, brandon, wyatt}@calpoly.edu}
 
 \begin{document}
 
 \begin{abstract}
-This project explores the feasibility of monitoring a user's network traffic by tricking them into connecting to a rogue access point. We discuss the security implications, methodologies for data capture, and potential countermeasures. Our findings highlight the ease of exploiting unsecured networks and the importance of user awareness.
+This project explores the feasibility of monitoring a user's network traffic by tricking them into connecting to a rogue access point via an NFC-based attack. We discuss the security implications, methodologies for data capture, and potential countermeasures. Our findings highlight the ease of exploiting unsecured networks and the importance of user awareness in preventing such attacks. Additionally, we explore countermeasures and discuss the limitations of our approach in real-world scenarios.
 \end{abstract}
 
 \maketitle
 
 \section{Introduction}
-Network security remains a critical concern in the modern digital landscape. This project investigates how an attacker could intercept a user's web activity by setting up a rogue access point and capturing network traffic. Our goal is to demonstrate potential vulnerabilities and discuss mitigation strategies.
+Untrusted Wi-Fi connections are highly vulnerable to man-in-the-middle (MITM) attacks. Generally, users avoid such risks by not connecting to suspicious networks. However, this project investigates a scenario where users unknowingly connect to a malicious network via NFC-based Wi-Fi onboarding, making them vulnerable without explicit intent. By leveraging an NFC tag, we can automatically prompt a target's device to join our rogue Wi-Fi network. Our goal is to demonstrate this attack vector, analyze its implications, and propose mitigations.
+
+We hypothesize that an attacker can easily convince a target to connect to an untrusted access point using NFC technology, leveraging automatic connection prompts as a social engineering attack.
 
 \section{Related Work}
-(Placeholder for related literature on network security, rogue AP attacks, and countermeasures.)
+Previous research on rogue access points and MITM attacks has shown that unsuspecting users can be easily tricked into connecting to malicious networks. Studies have also explored techniques such as Evil Twin attacks, DNS spoofing, and traffic analysis as effective mechanisms for data interception. NFC-based attacks, however, remain relatively unexplored in this domain, making our work novel in demonstrating its feasibility for practical exploitation.
+
+Prior studies have highlighted the security risks associated with automatic network onboarding mechanisms. Work on Evil Twin attacks \cite{eviltwin} demonstrates how users can be deceived into connecting to rogue networks. Similarly, studies on Wi-Fi Pineapple devices show how attackers can intercept and manipulate network traffic \cite{wifipineapple}. However, little research has been done on leveraging NFC for onboarding attacks, making this study a unique contribution.
 
 \section{Methodology}
-We set up an experimental network environment where unsuspecting users connected to a rogue Wi-Fi access point. Traffic was monitored using packet sniffing tools, and we analyzed the types of data that could be extracted.
+Our attack setup consisted of the following key components:
+\begin{itemize}
+    \item A MikroTik router running RouterOS to create and manage the rogue Wi-Fi network.
+    \item NFC tags programmed to contain Wi-Fi connection details.
+    \item Targeted Android devices, which automatically prompt users to connect to the rogue network upon detecting the NFC tag.
+    \item Network logging and analysis tools to capture and profile traffic from connected devices.
+\end{itemize}
+
+The attack was carried out as follows:
+\begin{enumerate}
+    \item The attacker approaches a target in a public space and subtly places the NFC tag near their Android device.
+    \item The target's phone detects the NFC tag and prompts them to connect to our network (e.g., mimicking an existing trusted network like “eduroam-guest”).
+    \item If the user clicks 'Connect,' their traffic is routed through our malicious access point.
+    \item Using RouterOS logs and tools like Wireshark, we analyze the victim's browsing activity.
+\end{enumerate}
+
+To maintain seamless internet access and reduce suspicion, our malicious network piggybacks off a legitimate internet connection via Ethernet. Additionally, we experimented with redirecting users via DNS spoofing, though HTTPS protections limited its effectiveness.
 
 \section{Results and Discussion}
-Our experiments revealed that unencrypted traffic can be easily captured, and even encrypted data leaks metadata that can provide insights into user activity.
+Our testing revealed the following insights:
+\begin{itemize}
+    \item We successfully tricked Android users into connecting to our rogue Wi-Fi network using NFC-based onboarding.
+    \item Network logs provided insight into users’ online activity, including visited websites (e.g., Reddit, Disney, ChatGPT).
+    \item Some websites, like ESPN and Yahoo, did not appear in our logs as expected, requiring further investigation into encrypted DNS and HTTPS traffic.
+    \item By forcing our router to act as a DNS provider, we were able to redirect domain requests (e.g., making calpoly.edu resolve to Yahoo.com), though this was limited by SSL/TLS warnings.
+    \item Android devices automatically prompted users to connect, demonstrating the risk of automatic network onboarding.
+\end{itemize}
+
+These results highlight the real-world feasibility of this attack and the importance of user awareness in preventing accidental connections to untrusted networks. However, limitations exist, such as the need for close physical proximity to the target and the increasing adoption of HTTPS, which reduces the effectiveness of simple traffic monitoring.
 
 \section{Lessons Learned}
-We identified several challenges, including detection avoidance and ethical considerations. Future work would explore more sophisticated attack vectors and countermeasures.
+Throughout this project, we encountered several challenges and key takeaways:
+\begin{itemize}
+    \item NFC-based attacks are highly effective but require close physical proximity.
+    \item Some websites implement security measures that obscure their traffic in logs, limiting the effectiveness of simple traffic monitoring.
+    \item DNS spoofing is limited in effectiveness due to HTTPS and certificate authority validation.
+    \item Future work could include QR code-based Wi-Fi onboarding (which affects iPhones), more advanced traffic profiling, and further exploration of phishing techniques using collected browsing data.
+\end{itemize}
 
 \section{Conclusion and Future Work}
-This study underscores the importance of secure network practices. Future research could investigate automated detection of rogue APs and improved security awareness campaigns.
+Our study demonstrates how an attacker can exploit NFC-based Wi-Fi onboarding to gain access to a victim’s network traffic without their explicit awareness. The effectiveness of this attack highlights the need for increased security measures and user education. In future work, we plan to explore additional social engineering techniques, automated traffic profiling, and countermeasures against rogue access points.
+
+We also propose testing additional NFC payloads and different router configurations to determine the extent of possible exploitation. Finally, studying how Apple’s iOS handles NFC onboarding could provide insights into the differences in security across platforms.
+
+\section{Recommendations}
+To protect against such attacks, users should:
+\begin{itemize}
+    \item Avoid clicking “Connect” when an unexpected Wi-Fi connection prompt appears.
+    \item Disable NFC when not in use to prevent unintended connections.
+    \item Advocate for Android to improve transparency in NFC-based Wi-Fi onboarding.
+    \item Use VPNs to encrypt traffic, mitigating the impact of network-based eavesdropping.
+\end{itemize}
+
+Additionally, developers and manufacturers should implement security measures such as requiring explicit user confirmation before connecting to NFC-based networks and enforcing stricter authentication for onboarding mechanisms.
 
 \bibliographystyle{ACM-Reference-Format}
 \bibliography{references}
