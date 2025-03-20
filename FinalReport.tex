@@ -1,0 +1,38 @@
+\documentclass[sigconf]{acmart}
+
+\title{Network Traffic Monitoring via Rogue Access Points}
+
+\author{Group Member 1, Group Member 2, Group Member 3}
+\affiliation{\institution{California Polytechnic State University, San Luis Obispo}}
+\email{{member1, member2, member3}@calpoly.edu}
+
+\begin{document}
+
+\begin{abstract}
+This project explores the feasibility of monitoring a user's network traffic by tricking them into connecting to a rogue access point. We discuss the security implications, methodologies for data capture, and potential countermeasures. Our findings highlight the ease of exploiting unsecured networks and the importance of user awareness.
+\end{abstract}
+
+\maketitle
+
+\section{Introduction}
+Network security remains a critical concern in the modern digital landscape. This project investigates how an attacker could intercept a user's web activity by setting up a rogue access point and capturing network traffic. Our goal is to demonstrate potential vulnerabilities and discuss mitigation strategies.
+
+\section{Related Work}
+(Placeholder for related literature on network security, rogue AP attacks, and countermeasures.)
+
+\section{Methodology}
+We set up an experimental network environment where unsuspecting users connected to a rogue Wi-Fi access point. Traffic was monitored using packet sniffing tools, and we analyzed the types of data that could be extracted.
+
+\section{Results and Discussion}
+Our experiments revealed that unencrypted traffic can be easily captured, and even encrypted data leaks metadata that can provide insights into user activity.
+
+\section{Lessons Learned}
+We identified several challenges, including detection avoidance and ethical considerations. Future work would explore more sophisticated attack vectors and countermeasures.
+
+\section{Conclusion and Future Work}
+This study underscores the importance of secure network practices. Future research could investigate automated detection of rogue APs and improved security awareness campaigns.
+
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{references}
+
+\end{document}
