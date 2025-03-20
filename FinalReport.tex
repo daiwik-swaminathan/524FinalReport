@@ -1,15 +1,16 @@
 \documentclass[sigconf]{acmart}
 
-\title{Network Traffic Monitoring via Rogue Access Points}
+\title{Network Traffic Monitoring Project}
 
-\author{Daiwik Swaminathan, Brandon, Wyatt}
+\author{Daiwik Swaminathan, Brandon Howell, Wyatt Colburn}
 \affiliation{\institution{California Polytechnic State University, San Luis Obispo}}
-\email{{daiwik, brandon, wyatt}@calpoly.edu}
+
+\settopmatter{printacmref=false}
 
 \begin{document}
 
 \begin{abstract}
-This project explores the feasibility of monitoring a user's network traffic by tricking them into connecting to a rogue access point via an NFC-based attack. We discuss the security implications, methodologies for data capture, and potential countermeasures. Our findings highlight the ease of exploiting unsecured networks and the importance of user awareness in preventing such attacks. Additionally, we explore countermeasures and discuss the limitations of our approach in real-world scenarios.
+This project explores the feasibility of monitoring a user's network traffic by tricking them into connecting to a rogue network/access point via an NFC-based attack. We discuss the security implications, methodologies for data capture, and potential countermeasures. Our findings highlight the ease of exploiting unsecured networks and the importance of user awareness in preventing such attacks. Additionally, we explore countermeasures and discuss the limitations of our approach in real-world scenarios.
 \end{abstract}
 
 \maketitle
@@ -17,10 +18,10 @@ This project explores the feasibility of monitoring a user's network traffic by 
 \section{Introduction}
 Untrusted Wi-Fi connections are highly vulnerable to man-in-the-middle (MITM) attacks. Generally, users avoid such risks by not connecting to suspicious networks. However, this project investigates a scenario where users unknowingly connect to a malicious network via NFC-based Wi-Fi onboarding, making them vulnerable without explicit intent. By leveraging an NFC tag, we can automatically prompt a target's device to join our rogue Wi-Fi network. Our goal is to demonstrate this attack vector, analyze its implications, and propose mitigations.
 
-We hypothesize that an attacker can easily convince a target to connect to an untrusted access point using NFC technology, leveraging automatic connection prompts as a social engineering attack.
+We hypothesize that an attacker can easily convince a target to connect to an untrusted network using NFC technology, leveraging automatic connection prompts as a social engineering attack.
 
 \section{Related Work}
-Previous research on rogue access points and MITM attacks has shown that unsuspecting users can be easily tricked into connecting to malicious networks. Studies have also explored techniques such as Evil Twin attacks, DNS spoofing, and traffic analysis as effective mechanisms for data interception. NFC-based attacks, however, remain relatively unexplored in this domain, making our work novel in demonstrating its feasibility for practical exploitation.
+Previous research on rogue networks and MITM attacks has shown that unsuspecting users can be easily tricked into connecting to malicious networks. Studies have also explored techniques such as Evil Twin attacks, DNS spoofing, and traffic analysis as effective mechanisms for data interception. NFC-based attacks, however, remain relatively unexplored in this domain, making our work novel in demonstrating its feasibility for practical exploitation.
 
 Prior studies have highlighted the security risks associated with automatic network onboarding mechanisms. Work on Evil Twin attacks \cite{eviltwin} demonstrates how users can be deceived into connecting to rogue networks. Similarly, studies on Wi-Fi Pineapple devices show how attackers can intercept and manipulate network traffic \cite{wifipineapple}. However, little research has been done on leveraging NFC for onboarding attacks, making this study a unique contribution.
 
@@ -36,9 +37,9 @@ Our attack setup consisted of the following key components:
 The attack was carried out as follows:
 \begin{enumerate}
     \item The attacker approaches a target in a public space and subtly places the NFC tag near their Android device.
-    \item The target's phone detects the NFC tag and prompts them to connect to our network (e.g., mimicking an existing trusted network like “eduroam-guest”).
-    \item If the user clicks 'Connect,' their traffic is routed through our malicious access point.
-    \item Using RouterOS logs and tools like Wireshark, we analyze the victim's browsing activity.
+    \item The target's phone detects the NFC tag and prompts them to connect to our network (e.g., we mimicked “eduroam”, which is the campus network).
+    \item If the user clicks 'Connect,' their traffic is routed through our malicious network.
+    \item Using RouterOS logs, we analyze the victim's browsing activity.
 \end{enumerate}
 
 To maintain seamless internet access and reduce suspicion, our malicious network piggybacks off a legitimate internet connection via Ethernet. Additionally, we experimented with redirecting users via DNS spoofing, though HTTPS protections limited its effectiveness.
@@ -48,12 +49,13 @@ Our testing revealed the following insights:
 \begin{itemize}
     \item We successfully tricked Android users into connecting to our rogue Wi-Fi network using NFC-based onboarding.
     \item Network logs provided insight into users’ online activity, including visited websites (e.g., Reddit, Disney, ChatGPT).
-    \item Some websites, like ESPN and Yahoo, did not appear in our logs as expected, requiring further investigation into encrypted DNS and HTTPS traffic.
+    \item Sometimes websites did not consistently appear in the logs and some even never showed up in the logs. We unfortunately did not have too much time to investigate why this was happening but did have suspicions it might have to do with load balancing and content-delivery network behaviors.
     \item By forcing our router to act as a DNS provider, we were able to redirect domain requests (e.g., making calpoly.edu resolve to Yahoo.com), though this was limited by SSL/TLS warnings.
-    \item Android devices automatically prompted users to connect, demonstrating the risk of automatic network onboarding.
+    \item Android devices automatically prompted users to connect, demonstrating the risk of automatic network onboarding. In contrast, we were unable to perform this attack on Apple devices, as they do not automatically connect to unknown NFC tags.
+    \item We did also observe that even with intentionally connecting to our rogue network, Apple devices issues several warnings indicating the suspicious nature of our network.
 \end{itemize}
 
-These results highlight the real-world feasibility of this attack and the importance of user awareness in preventing accidental connections to untrusted networks. However, limitations exist, such as the need for close physical proximity to the target and the increasing adoption of HTTPS, which reduces the effectiveness of simple traffic monitoring.
+These results highlight the real-world feasibility of this attack and the importance of user awareness in preventing accidental connections to untrusted networks. However, limitations exist, such as the need for close physical proximity to the target and the increasing adoption of HTTPS, which reduces the effectiveness of simple traffic monitoring. Further, this attack was only possible with Android devices and not Apple devices.
 
 \section{Lessons Learned}
 Throughout this project, we encountered several challenges and key takeaways:
@@ -108,7 +110,7 @@ There were three main security benefits to this system.
     \item 3) Centralized management: the raspberry pi would monitor the NFC tags, suspend access if the user went to a compromised website, and update the password if necessary. 
 \end{itemize}
 
-However, iPhones do not support using NFC to connect to WiFi network, which serverly limited the accessibility of our system. In addition, our router already had an OS called MikroTik which allowed us to provide control over our network. Therefore, we pivoted to
+However, iPhones do not support using NFC to connect to WiFi network, which serverly limited the accessibility of our system. In addition, our router already had an OS called MikroTik which allowed us to provide control over our network. Therefore, we decided to pivot to the project described above.
 
 
 
