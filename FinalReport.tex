@@ -21,7 +21,7 @@ Untrusted Wi-Fi connections are highly vulnerable to man-in-the-middle (MITM) at
 We hypothesize that an attacker can easily convince a target to connect to an untrusted network using NFC technology, leveraging automatic connection prompts as a social engineering attack.
 
 \section{Related Work}
-Previous research on rogue networks and MITM attacks has shown that unsuspecting users can be easily tricked into connecting to malicious networks. Studies have also explored techniques such as Evil Twin attacks, DNS spoofing, and traffic analysis as effective mechanisms for data interception. NFC-based attacks, however, remain relatively unexplored in this domain, making our work novel in demonstrating its feasibility for practical exploitation.
+Previous research on rogue networks and MITM attacks \cite{mitm} has shown that unsuspecting users can be easily tricked into connecting to malicious networks. Studies have also explored techniques such as Evil Twin attacks, DNS spoofing, and traffic analysis as effective mechanisms for data interception. NFC-based attacks, however, remain relatively unexplored in this domain, making our work novel in demonstrating its feasibility for practical exploitation.
 
 Prior studies have highlighted the security risks associated with automatic network onboarding mechanisms. Work on Evil Twin attacks \cite{eviltwin} demonstrates how users can be deceived into connecting to rogue networks. Similarly, studies on Wi-Fi Pineapple devices show how attackers can intercept and manipulate network traffic \cite{wifipineapple}. However, little research has been done on leveraging NFC for onboarding attacks, making this study a unique contribution.
 
@@ -42,7 +42,7 @@ The attack was carried out as follows:
     \item Using RouterOS logs, we analyze the victim's browsing activity.
 \end{enumerate}
 
-To maintain seamless internet access and reduce suspicion, our malicious network piggybacks off a legitimate internet connection via Ethernet. Additionally, we experimented with redirecting users via DNS spoofing, though HTTPS protections limited its effectiveness.
+To maintain seamless internet access and reduce suspicion, our malicious network piggybacks off a legitimate internet connection via Ethernet. Additionally, we experimented with redirecting users via DNS spoofing \cite{dns}, though HTTPS protections limited its effectiveness.
 
 \section{Results and Discussion}
 Our testing revealed the following insights:
@@ -93,7 +93,7 @@ To protect against such attacks, users should:
     \item Avoid clicking “Connect” when an unexpected Wi-Fi connection prompt appears.
     \item Disable NFC when not in use to prevent unintended connections.
     \item Advocate for Android to improve transparency in NFC-based Wi-Fi onboarding.
-    \item Use VPNs to encrypt traffic, mitigating the impact of network-based eavesdropping.
+    \item Use VPNs to encrypt traffic, mitigating the impact of network-based eavesdropping. \cite{sniffing}
 \end{itemize}
 
 Additionally, developers and manufacturers should implement security measures such as requiring explicit user confirmation before connecting to NFC-based networks and enforcing stricter authentication for onboarding mechanisms.
@@ -114,9 +114,7 @@ However, iPhones do not support using NFC to connect to WiFi network, which serv
 
 
 
-
-\section{Conclusion}
 \bibliographystyle{ACM-Reference-Format}
-\bibliography{references}
+\bibliography{references} 
 
 \end{document}
